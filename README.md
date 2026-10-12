@@ -39,6 +39,23 @@ npm run test
 npm run build
 ```
 
+## Deploy (easiest path: Vercel)
+
+One-click import:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Mahakalexpert/Vit-Connect)
+
+After import, set this environment variable in Vercel:
+
+- `DATABASE_URL` (PostgreSQL connection string)
+
+Then deploy. Vercel will run `npm install` and `npm run build` automatically, and Prisma Client is generated during install via `postinstall`.
+
+### Post-deploy verification
+1. Open `/`
+2. Open `/sign-in`
+3. Open `/app/dashboard`
+
 ## Milestone 2 database baseline commands
 ```bash
 npm run prisma:validate
