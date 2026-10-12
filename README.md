@@ -1,6 +1,6 @@
 # VIT Connect
 
-VIT Connect is an incremental build of a VIT Pune Campus Hub. This repository currently contains **Milestone 1**: a production-oriented Next.js + TypeScript foundation, reusable UI system primitives, and an authenticated-shell prototype with clearly marked development-only states.
+VIT Connect is an incremental build of a VIT Pune Campus Hub. This repository currently contains **Milestone 1 + Milestone 2 baseline**: a production-oriented Next.js + TypeScript foundation, reusable UI system primitives, and initial Prisma/PostgreSQL wiring with seed scaffolding.
 
 ## Current stack (Milestone 1)
 - Next.js App Router
@@ -16,6 +16,8 @@ VIT Connect is an incremental build of a VIT Pune Campus Hub. This repository cu
 - Reusable design system components for buttons, badges, cards, inputs, and tables
 - Architecture + implementation planning docs
 - Safe `.env.example` placeholders only (no secrets)
+- Prisma schema for planned core campus entities with PostgreSQL datasource
+- Seed scaffolding for baseline development records
 
 ## Documentation
 - Specification and checklist: [`docs/specification.md`](./docs/specification.md)
@@ -37,8 +39,15 @@ npm run test
 npm run build
 ```
 
+## Milestone 2 database baseline commands
+```bash
+npm run prisma:validate
+npm run prisma:generate
+npm run db:seed
+```
+
 ## Important limitations in this milestone
 - No production authentication/provider integration yet.
-- No PostgreSQL/Prisma schema implementation yet.
+- No Prisma migration history has been applied in this repository yet.
 - No real institutional integrations or official notice feeds.
 - Synthetic/sample content is used only for UI development.

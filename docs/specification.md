@@ -29,7 +29,7 @@ VIT Connect is intended to become a campus information and collaboration hub for
 
 ## Milestone plan
 - [x] **Milestone 1 (this change)**: project specification, architecture docs, reusable design system foundation, public entry pages, authenticated-shell prototype, placeholder environment template, runnable smoke tests.
-- [ ] Milestone 2: Prisma schema + PostgreSQL wiring + initial seed strategy.
+- [x] Milestone 2: Prisma schema + PostgreSQL wiring + initial seed strategy baseline.
 - [ ] Milestone 3: Authentication/authorization integration with real session boundaries.
 - [ ] Milestone 4: announcements, forums, academic hierarchy modules.
 - [ ] Milestone 5: integrations, notifications, search, admin governance.
@@ -42,10 +42,11 @@ VIT Connect is intended to become a campus information and collaboration hub for
 - [x] Explicit development-only labels for non-production auth/data states.
 - [x] Architecture documentation and `.env.example` placeholders added.
 - [x] Minimal test setup and smoke tests for landing/shell behaviors.
+- [x] Prisma schema, PostgreSQL datasource wiring, and seed strategy scaffolding for planned entities.
 
 ## Explicitly incomplete (by design)
 - [ ] Production authentication flow
-- [ ] Database schema/migrations and persistence
+- [ ] Production migration lifecycle and live persistent data onboarding
 - [ ] External SIS/LMS/notification/search integrations
 - [ ] Real announcements/forums/event data
 - [ ] End-to-end and integration test suites

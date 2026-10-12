@@ -4,7 +4,7 @@
 - **Framework**: Next.js App Router + TypeScript for typed server/client boundaries and scalable routing.
 - **UI foundation**: Tailwind CSS v4 tokens + reusable primitives (`Button`, `Badge`, `Card`, `Input`, `Table`) with Radix Slot composition and Lucide icons.
 - **Validation plan**: Zod is included for request/config validation in upcoming API and form layers.
-- **Data plan**: PostgreSQL + Prisma-ready boundaries are documented for Milestone 2 implementation.
+- **Data plan**: PostgreSQL + Prisma datasource and initial schema baseline are now wired for iterative expansion.
 - **Authentication plan**: Auth.js-style server session approach is planned; current sign-in is explicitly development-only UI state.
 
 ## 2) Planned module boundaries
@@ -17,7 +17,7 @@
 - `lib/`: utilities and future adapters/validators.
 - `docs/`: architecture and milestone specifications.
 
-## 3) Planned database entities (not implemented yet)
+## 3) Database entities baseline (Milestone 2)
 - `User`: identity profile and status.
 - `RoleAssignment`: role membership in scopes (student/faculty/admin/moderator).
 - `Department`, `Program`, `Course`: academic hierarchy.
@@ -26,6 +26,7 @@
 - `Event`: campus activities.
 - `Notification`: user-facing delivery records.
 - `AuditLog`: moderation/admin traceability.
+- Seed scaffolding is included for development-only baseline records.
 
 ## 4) Authorization model (planned)
 - Default deny outside public routes.
@@ -65,6 +66,6 @@ See `.env.example` placeholders:
 
 ## 9) Current explicit limitations
 - No real auth provider/session persistence.
-- No database schema/migrations yet.
+- No migration history has been applied yet in this repository.
 - No live institutional integrations.
 - Synthetic content only for UI demonstration.

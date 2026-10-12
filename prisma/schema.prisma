@@ -1,0 +1,169 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum Role {
+  STUDENT
+  FACULTY
+  COORDINATOR
+  MODERATOR
+  ADMIN
+}
+
+enum NotificationChannel {
+  IN_APP
+  EMAIL
+  SMS
+  PUSH
+}
+
+enum NotificationStatus {
+  QUEUED
+  SENT
+  FAILED
+}
+
+model User {
+  id                String           @id @default(cuid())
+  email             String           @unique
+  displayName       String
+  status            UserStatus       @default(ACTIVE)
+  roleAssignments   RoleAssignment[]
+  authoredThreads   ForumThread[]    @relation("ThreadAuthor")
+  authoredPosts     ForumPost[]      @relation("PostAuthor")
+  authoredNotices   Announcement[]   @relation("AnnouncementAuthor")
+  deliveredAlerts   Notification[]
+  moderatedAuditLog AuditLog[]       @relation("AuditActor")
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+}
+
+model Department {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  programs  Program[]
+  courses   Course[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Program {
+  id           String    @id @default(cuid())
+  code         String    @unique
+  name         String
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Restrict)
+  courses      Course[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([departmentId, name])
+}
+
+model Course {
+  id           String    @id @default(cuid())
+  code         String
+  title        String
+  departmentId String
+  programId    String?
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Restrict)
+  program      Program?   @relation(fields: [programId], references: [id], onDelete: SetNull)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([departmentId, code])
+}
+
+model RoleAssignment {
+  id        String   @id @default(cuid())
+  userId    String
+  role      Role
+  scope     String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, role, scope])
+}
+
+model Announcement {
+  id          String    @id @default(cuid())
+  title       String
+  body        String
+  isPublished Boolean   @default(false)
+  authorId    String
+  author      User      @relation("AnnouncementAuthor", fields: [authorId], references: [id], onDelete: Restrict)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model ForumThread {
+  id          String     @id @default(cuid())
+  title       String
+  body        String
+  authorId    String
+  author      User       @relation("ThreadAuthor", fields: [authorId], references: [id], onDelete: Restrict)
+  posts       ForumPost[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model ForumPost {
+  id         String      @id @default(cuid())
+  threadId   String
+  authorId   String
+  body       String
+  thread     ForumThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  author     User        @relation("PostAuthor", fields: [authorId], references: [id], onDelete: Restrict)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  startsAt    DateTime
+  endsAt      DateTime
+  location    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Notification {
+  id            String             @id @default(cuid())
+  userId        String
+  channel       NotificationChannel
+  status        NotificationStatus @default(QUEUED)
+  subject       String
+  body          String
+  deliveredAt   DateTime?
+  user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  actorId     String?
+  action      String
+  entityType  String
+  entityId    String
+  metadata    Json?
+  actor       User?    @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+  occurredAt  DateTime @default(now())
+
+  @@index([entityType, entityId])
+}
